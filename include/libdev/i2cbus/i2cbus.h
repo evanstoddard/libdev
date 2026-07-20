@@ -36,23 +36,23 @@ extern "C" {
  *
  */
 struct i2cbus_api {
-  int (*read)(struct device *dev, void *buf, size_t len, uint16_t addr,
+  int (*read)(const struct device *dev, void *buf, size_t len, uint16_t addr,
               uint32_t timeout);
-  int (*write)(struct device *dev, const void *buf, size_t len, uint16_t addr,
-               uint32_t timeout);
+  int (*write)(const struct device *dev, const void *buf, size_t len,
+               uint16_t addr, uint32_t timeout);
 };
 
 /*****************************************************************************
  * Function Prototypes
  *****************************************************************************/
 
-static inline int i2cbus_read(struct device *dev, void *buf, size_t len,
+static inline int i2cbus_read(const struct device *dev, void *buf, size_t len,
                               uint16_t addr, uint32_t timeout) {
   return -ENOTSUP;
 }
 
-static inline i2cbus_write(struct device *dev, const void *buf, size_t len,
-                           uint16_t addr, uint32_t timeout) {
+static inline int i2cbus_write(const struct device *dev, const void *buf,
+                               size_t len, uint16_t addr, uint32_t timeout) {
   return -ENOTSUP;
 }
 
