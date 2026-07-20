@@ -40,10 +40,12 @@ struct device {
  * Function Prototypes
  *****************************************************************************/
 
+#define LIBDEV_DEVICE_ATTR(name, key, val)
+
 /* Expand the project's device.def once, emitting an extern for every
  * instance. LIBDEV_DEVICE is redefined to nothing afterward so any later
  * expansion of a def entry in this translation unit is a no-op. */
-#define LIBDEV_DEVICE(name, compat)                                            \
+#define LIBDEV_DEVICE(name, compat, base_addr, parent_dev)                     \
   extern const struct device LIBDEV_DEV_INST_NAME(name);
 #include LIBDEV_DEFINITION_INCLUDE
 #undef LIBDEV_DEVICE
