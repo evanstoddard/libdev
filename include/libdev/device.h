@@ -84,6 +84,15 @@ struct device {
  */
 #define LIBDEV_DEVICE_GET(inst_name) (&LIBDEV_DEV_INST_NAME(inst_name))
 
+#define LIBDEV_DEVICE_GET_BASE_ADDR(inst_name)                                 \
+  (&(LIBDEV_DEVICE_##inst_name##_BASE_ADDR))
+
+#define LIBDEV_DEVICE_GET_PARENT_DEV_INST(inst_name)                           \
+  LIBDEV_DEVICE_GET(LIBDEV_DEVICE_##inst_name##_PARENT_DEV)
+
+#define LIBDEV_DEVICE_GET_ATTR(inst_name, key)                                 \
+  (LIBDEV_DEVICE_INST_##inst_name##_ATTR_##key)
+
 #ifdef __cplusplus
 }
 #endif
