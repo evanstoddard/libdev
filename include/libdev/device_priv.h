@@ -19,21 +19,20 @@ extern "C" {
  * Definitions
  *****************************************************************************/
 
+/**
+ * @brief Prefix for all generated defines, macros, and device instance structs
+ */
 #define LIBDEV_INST_PREFIX libdev_dev_inst_
 
 #define LIBDEV_CONCAT_(a, b) a##b
 #define LIBDEV_CONCAT(a, b) LIBDEV_CONCAT_(a, b)
 
+/**
+ * @brief Converts user specified device instance name to long form generated
+ * name
+ */
 #define LIBDEV_DEV_INST_NAME(inst_name)                                        \
   LIBDEV_CONCAT(LIBDEV_INST_PREFIX, inst_name)
-
-/*****************************************************************************
- * Structs, Unions, Enums, & Typedefs
- *****************************************************************************/
-
-/*****************************************************************************
- * Function Prototypes
- *****************************************************************************/
 
 #ifdef __cplusplus
 }

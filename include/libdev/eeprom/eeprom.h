@@ -29,6 +29,11 @@ extern "C" {
  * Structs, Unions, Enums, & Typedefs
  *****************************************************************************/
 
+/**
+ * @class eeprom_api
+ * @brief EEPROM Subsystem API definition
+ *
+ */
 struct eeprom_api {
   int (*read)(const struct device *dev, off_t offset, void *buf, size_t len);
   int (*write)(const struct device *dev, off_t offset, const void *buf,
@@ -39,6 +44,16 @@ struct eeprom_api {
  * Function Prototypes
  *****************************************************************************/
 
+/**
+ * @brief Shim to call device instance's driver read function
+ *
+ * @param dev Pointer to device instance
+ * @param offset Offset to read from
+ * @param buf Buffer to write data to
+ * @param len Length of data to read
+ * @retval -ENODEV NULL device instance
+ * @retval -EINVAL Invalid arguments
+ */
 static inline int eeprom_read(const struct device *dev, off_t offset, void *buf,
                               size_t len) {
   if (dev == NULL) {
@@ -52,6 +67,16 @@ static inline int eeprom_read(const struct device *dev, off_t offset, void *buf,
   return ((struct eeprom_api *)dev->api)->read(dev, offset, buf, len);
 }
 
+/**
+ * @brief Shim to call device instance's driver read function
+ *
+ * @param dev Pointer to device instance
+ * @param offset Offset to read from
+ * @param buf Buffer to write data to
+ * @param len Length of data to read
+ * @retval -ENODEV NULL device instance
+ * @retval -EINVAL Invalid arguments
+ */
 static inline int eeprom_write(const struct device *dev, off_t offset,
                                const void *buf, size_t len) {
   if (dev == NULL) {
