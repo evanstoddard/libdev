@@ -46,6 +46,18 @@ struct i2cbus_api {
  * Function Prototypes
  *****************************************************************************/
 
+/**
+ * @brief Shim to calling device instance's read API call
+ *
+ * @param device Pointer to device instance
+ * @param Pointer to buffer to write read data into
+ * @param Length of read
+ * @param I2C address
+ * @param Timeout for blocking read
+ * @retval -ENODEV Device instance is NULL
+ * @retval -EINVAL Invalid input arguments
+ * @retval 0 Success
+ */
 static inline int i2cbus_read(const struct device *dev, void *buf, size_t len,
                               uint16_t addr, uint32_t timeout) {
   if (dev == NULL) {
@@ -59,6 +71,30 @@ static inline int i2cbus_read(const struct device *dev, void *buf, size_t len,
   return ((struct i2cbus_api *)dev->api)->read(dev, buf, len, addr, timeout);
 }
 
+/**
+ * @brief Shim to calling device instance's write API call
+ *
+ * @param device Pointer to device instance
+ * @param Pointer to buffer to write
+ * @param Length of bufer
+ * @param I2C address
+ * @param Timeout for blocking write
+ * @retval -ENODEV Device instance is NULL
+ * @retval -EINVAL Invalid input arguments
+ * @retval 0 Success
+ */
+static inline int i2cbus_read(const struct device *dev, void *buf, size_t len,
+                              uint16_t addr, uint32_t timeout) {
+  if (dev == NULL) {
+    return -ENODEV;
+  }
+
+  if (buf == NULL || len == 0) {
+    return -EINVAL;
+  }
+
+  return ((struct i2cbus_api *)dev->api)->read(dev, buf, len, addr, timeout);
+}
 static inline int i2cbus_write(const struct device *dev, const void *buf,
                                size_t len, uint16_t addr, uint32_t timeout) {
   if (dev == NULL) {
