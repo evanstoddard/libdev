@@ -44,11 +44,18 @@ def parse_device_attributes(def_path):
 def render_devices(devices):
     lines = ["/* Root Devices */"]
     
+    compat_map = {} 
+
     for name, compat, base_addr, parent_dev in devices:
-        lines.append(f"#define LIBDEV_FOREACH_{compat}(fn) fn({name})")
+        compat_str = f"{compat}"
+        compat_map.setdefault(compat_str, []).append(f"fn({name})")
         lines.append(f"#define LIBDEV_DEVICE_{name}_BASE_ADDR {base_addr}")
         lines.append(f"#define LIBDEV_DEVICE_{name}_PARENT_DEV {parent_dev}")
         lines.append("")
+
+    for key, invocations in compat_map.items():
+        lines.append(f"#define LIBDEV_FOREACH_{key}(fn) {' '.join(invocations)}")
+
     return "\n".join(lines) + "\n" 
 
 def render_attributes(attributes):
