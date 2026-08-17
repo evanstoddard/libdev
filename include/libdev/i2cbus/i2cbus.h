@@ -36,9 +36,14 @@ extern "C" {
  *
  */
 struct i2cbus_target_config {
-  struct i2cbus_target_config *node;
+  struct i2cbus_target_config *next;
+
   uint16_t addr;
   const struct i2cbus_target_callbacks *callbacks;
+
+  const struct device *dev;
+  uint8_t rx_byte;
+  uint8_t tx_byte;
 };
 
 /**
@@ -72,6 +77,9 @@ struct i2cbus_api {
               uint32_t timeout);
   int (*write)(const struct device *dev, const void *buf, size_t len,
                uint16_t addr, uint32_t timeout);
+  int (*write_read)(const struct device *dev, const void *write_buf,
+                    size_t write_len, void *read_buf, size_t read_len,
+                    uint16_t addr, uint32_t timeout);
   int (*register_target)(const struct device *dev,
                          struct i2cbus_target_config *target_config);
   int (*unregister_target)(const struct device *dev,
@@ -130,6 +138,24 @@ static inline int i2cbus_write(const struct device *dev, const void *buf,
   }
 
   return ((struct i2cbus_api *)dev->api)->write(dev, buf, len, addr, timeout);
+}
+
+static inline int i2cbus_write_read(const struct device *dev,
+                                    const void *write_buf, size_t write_len,
+                                    void *read_buf, size_t read_len,
+                                    uint16_t addr, uint32_t timeout) {
+  if (dev == NULL) {
+    return -ENODEV;
+  }
+
+  if (write_buf == NULL || read_buf == NULL || write_len == 0 ||
+      read_len == 0) {
+    return -EINVAL;
+  }
+
+  return ((struct i2cbus_api *)dev->api)
+      ->write_read(dev, write_buf, write_len, read_buf, read_len, addr,
+                   timeout);
 }
 
 /**
